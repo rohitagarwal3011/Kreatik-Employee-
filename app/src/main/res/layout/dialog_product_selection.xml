@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_10sdp">
+
+    <TextView
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:id="@+id/select_product_title"
+        android:text="Select Product"
+        android:textColor="#333"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:background="@drawable/round_edittext_light"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:spinnerMode="dropdown"
+        android:textSize="@dimen/_11sdp"
+        android:background="@drawable/round_edittext_light"
+        android:layout_toRightOf="@id/select_product_title"
+        android:layout_alignTop="@id/select_product_title"
+        android:id="@+id/select_product_relative">
+
+        <Spinner
+            android:id="@+id/select_product"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:spinnerMode="dropdown"
+            android:textSize="@dimen/_12sdp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:text="Quantity"
+        android:textColor="#333"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:background="@drawable/round_edittext_light"
+        android:layout_below="@id/select_product_title"
+        android:id="@+id/quantity_title" />
+
+    <EditText
+        android:id="@+id/quantity"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_toRightOf="@id/quantity_title"
+        android:layout_alignTop="@id/quantity_title"
+        android:background="@drawable/round_edittext_light"
+        android:inputType="number"
+        android:hint="Bags"
+        android:textSize="@dimen/_11sdp"
+        android:padding="@dimen/_5sdp"
+        android:maxLength="4"/>
+
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:text="Done"
+        android:layout_below="@id/quantity_title"
+        android:textColor="@color/white"
+        android:background="@color/colorAccent"/>
+
+</RelativeLayout>

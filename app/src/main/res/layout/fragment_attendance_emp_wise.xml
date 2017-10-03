@@ -1,0 +1,242 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    tools:context="com.app.rbc.employee.fragments.Attendance_emp_wise">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       >
+      <LinearLayout
+          android:id="@+id/profile_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="@dimen/_10sdp"
+          android:visibility="gone"
+          android:paddingTop="@dimen/_10sdp"
+          android:paddingLeft="@dimen/_20sdp"
+          android:paddingRight="@dimen/_20sdp"
+          android:orientation="horizontal">
+
+          <com.facebook.drawee.view.SimpleDraweeView
+              android:id="@+id/profile_pic"
+              android:layout_width="@dimen/_50sdp"
+              android:layout_height="@dimen/_50sdp"
+              android:layout_gravity="left"
+              fresco:roundAsCircle="true"
+              fresco:roundedCornerRadius="@dimen/_5sdp"
+              fresco:roundWithOverlayColor="#ccc"
+              fresco:roundBottomLeft="false"
+              fresco:roundBottomRight="false"
+              fresco:roundingBorderWidth="1dp"
+              fresco:roundingBorderColor="#ccc"/>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:paddingLeft="@dimen/_18sdp"
+               android:layout_gravity="center_vertical"
+               android:orientation="vertical">
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="Today's Status"
+                   android:textSize="@dimen/_13sdp"
+                   android:textColor="@color/black"/>
+               <TextView
+                   android:id="@+id/attendance_status"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/_11sdp"
+                   android:textColor="#757575"
+                   android:text="You were marked Absent."/>
+               <TextView
+                   android:id="@+id/attendance_remarks"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/_11sdp"
+                   android:visibility="gone"
+                   android:textColor="#757575"
+                   android:text="Remarks :  "/>
+           </LinearLayout>
+
+      </LinearLayout>
+
+       <View
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/_1sdp"
+           android:background="#ccc"/>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+           android:weightSum="2">
+
+
+           <LinearLayout
+               android:id="@+id/week_layout"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical"
+               android:visibility="gone"
+               android:layout_weight="1">
+
+
+
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="@dimen/_10sdp"
+           android:orientation="horizontal">
+
+           <com.github.mikephil.charting.charts.PieChart
+               android:id="@+id/week_chart"
+               android:layout_width="@dimen/_180sdp"
+               android:layout_height="@dimen/_150sdp" />
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Last 7 days status"
+               android:gravity="right"
+               android:layout_marginTop="@dimen/_10sdp"
+               android:paddingLeft="@dimen/_20sdp"
+               android:paddingTop="@dimen/_5sdp"
+               android:paddingBottom="@dimen/_5sdp"
+               android:paddingRight="@dimen/_15sdp"
+
+               android:textColor="@color/black"
+               android:textSize="@dimen/_13sdp"/>
+           
+           <LinearLayout
+               android:id="@+id/legends_layout"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical|left"
+               android:layout_marginLeft="@dimen/_185sdp"
+               android:layout_marginTop="@dimen/_25sdp"
+               android:visibility="visible"
+               android:orientation="vertical">
+
+               <TextView
+                   android:id="@+id/week_half_day"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textColor="#757575"
+                   android:visibility="visible"
+                   android:textSize="@dimen/_11sdp"
+                   android:text=""/>
+
+               <TextView
+                   android:id="@+id/week_absent"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textColor="#757575"
+                   android:visibility="visible"
+                   android:textSize="@dimen/_11sdp"
+                   android:text=""/>
+
+               <TextView
+                   android:id="@+id/week_present"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textColor="#757575"
+                   android:textSize="@dimen/_11sdp"
+                   android:text=""/>
+
+
+
+
+           </LinearLayout>
+
+
+       </FrameLayout>
+           </LinearLayout>
+
+           <View
+               android:layout_width="match_parent"
+               android:layout_height="@dimen/_1sdp"
+               android:background="#ccc"/>
+           <LinearLayout
+               android:id="@+id/month_layout"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical"
+               android:visibility="gone"
+               android:layout_weight="1">
+
+
+
+
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:padding="@dimen/_10sdp">
+
+           <com.github.mikephil.charting.charts.PieChart
+               android:id="@+id/month_chart"
+               android:layout_width="@dimen/_180sdp"
+               android:layout_height="@dimen/_150sdp" />
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:id="@+id/which_month"
+               android:text="This Month status"
+               android:gravity="right"
+               android:layout_marginTop="@dimen/_10sdp"
+               android:paddingLeft="@dimen/_20sdp"
+               android:paddingTop="@dimen/_5sdp"
+               android:paddingBottom="@dimen/_5sdp"
+               android:paddingRight="@dimen/_15sdp"
+
+               android:textColor="@color/black"
+               android:textSize="@dimen/_13sdp"/>
+
+           <LinearLayout
+               android:id="@+id/months_legend_layout"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical|left"
+               android:layout_marginLeft="@dimen/_185sdp"
+               android:layout_marginTop="@dimen/_25sdp"
+               android:visibility="visible"
+               android:orientation="vertical">
+
+               <TextView
+                   android:id="@+id/month_half_day"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textColor="#757575"
+                   android:textSize="@dimen/_11sdp" />
+
+               <TextView
+                   android:id="@+id/month_absent"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textColor="#757575"
+                   android:textSize="@dimen/_11sdp" />
+
+               <TextView
+                   android:id="@+id/month_present"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textColor="#757575"
+                   android:textSize="@dimen/_11sdp" />
+
+
+           </LinearLayout>
+
+       </FrameLayout>
+           </LinearLayout>
+       </LinearLayout>
+   </LinearLayout>
+
+
+</FrameLayout>

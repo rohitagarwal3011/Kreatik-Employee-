@@ -1,0 +1,309 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    tools:context="com.app.rbc.employee.fragments.RequirementDetails">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:id="@+id/requirement_details_layout"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Raised by :"
+                    android:visibility="gone"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/profile_pic"
+                        android:layout_width="@dimen/_55sdp"
+                        android:layout_height="@dimen/_55sdp"
+                        android:layout_gravity="left"
+                        fresco:roundAsCircle="true"
+                        fresco:roundedCornerRadius="@dimen/_5sdp"
+                        fresco:roundWithOverlayColor="#ccc"
+                        fresco:roundBottomLeft="false"
+                        fresco:roundBottomRight="false"
+                        fresco:roundingBorderWidth="1dp"
+                        fresco:roundingBorderColor="#ccc"/>
+                    <!--
+                     app:civ_border_color="#ccc"
+
+                     app:civ_border_width="@dimen/_1sdp"
+                     app:civ_shadow="true"
+                     app:civ_shadow_color="#ccc"
+                     app:civ_shadow_radius="0" />-->
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/_20sdp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/employee_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center_vertical"
+                            android:text="Rohit Agarwal"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+                        <TextView
+                            android:id="@+id/role"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center_vertical"
+                            android:text="Manager"
+                            android:textStyle="italic"
+                            android:visibility="visible"
+                            android:textColor="#757575"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <TextView
+                            android:id="@+id/requirement_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="06-10-17"
+                            android:visibility="visible"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="visible"
+                        android:paddingLeft="@dimen/_20sdp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/site_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right|center_vertical"
+                            android:text="Site"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp" />
+                        <TextView
+                            android:id="@+id/remaining_quantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right|center_vertical"
+                            android:text="350 remaining"
+                            android:textStyle="italic"
+                            android:visibility="invisible"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Purpose: "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/purpose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Dhalai"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".8"
+                        android:visibility="invisible"
+                        android:gravity="right|center_vertical"
+                        android:text="Status : "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Assigned"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:textStyle="bold"
+                        android:id="@+id/Requirement_status"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/_11sdp" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Product's Information"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:background="@color/heading"
+
+                    />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/product_table"
+
+                    >
+                    <TableRow
+                        android:id="@+id/rowheading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_edittext_light"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:layout_weight="1"
+                            android:text="Product"
+                            android:textSize="@dimen/_10sdp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Quantity"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_5sdp"
+                           />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Rem. Quantity"
+                            android:textColor="@color/black"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/_10sdp"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_5sdp"
+
+                            />
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:id="@+id/description_heading"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone"
+                android:padding="@dimen/_5sdp"
+                android:background="@color/heading"
+                android:layout_marginTop="@dimen/_10sdp"
+                />
+            <TextView
+                android:id="@+id/fulfillment_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:visibility="gone"
+                android:background="@color/white"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vehicle's Information"
+                android:id="@+id/vehicle_heading"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:padding="@dimen/_5sdp"
+                android:background="@color/heading"
+                android:layout_marginTop="@dimen/_10sdp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/vehicle_info"
+                android:scrollbars="vertical"/>
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="@dimen/_50sdp"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        tools:ignore="VectorDrawableCompat" />
+
+
+</FrameLayout>

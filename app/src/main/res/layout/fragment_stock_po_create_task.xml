@@ -1,0 +1,223 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    tools:context="com.app.rbc.employee.fragments.Stock_po_create_task">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:id="@+id/details_card">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:text="Employee"
+            android:textColor="#333"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/employee_title"
+            android:background="@drawable/round_edittext_light"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/_12sdp"/>
+        <TextView
+            android:layout_toRightOf="@id/employee_title"
+            android:layout_alignTop="@id/employee_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:id="@+id/employee_for_po"
+            android:background="@drawable/round_edittext_unselectable"
+
+            android:text="Rohit Agarwal"
+            android:padding="@dimen/_5sdp"
+
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"/>
+
+        <TextView
+            android:layout_below="@id/employee_title"
+            android:id="@+id/category_title"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/round_edittext_light"
+            android:textColor="#333"
+            android:text="Category"
+            android:gravity="center_vertical"
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"/>
+        <TextView
+            android:layout_toRightOf="@id/category_title"
+            android:layout_alignTop="@id/category_title"
+            android:background="@drawable/round_edittext_unselectable"
+
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:id="@+id/product_for_po"
+            android:text="Cement"
+            android:padding="@dimen/_5sdp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"/>
+
+
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:id="@+id/products_card"
+        android:layout_below="@id/details_card">
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Product Details"
+                android:textSize="@dimen/_12sdp"
+                android:padding="@dimen/_5sdp"
+                android:background="@color/heading"
+                android:textColor="@color/black"
+                android:id="@+id/product_table_title"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/product_table"
+                android:layout_below="@id/product_table_title">
+                <TableRow
+                    android:id="@+id/rowheading"
+                    android:background="@drawable/round_edittext_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        android:text="Product"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quantity"
+                        android:textSize="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:padding="@dimen/_5sdp"
+                        android:gravity="left"
+                        android:textColor="@color/black"/>
+                </TableRow>
+            </TableLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:id="@+id/deadline_card"
+        android:layout_below="@id/products_card">
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deadline"
+                android:id="@+id/deadline_title"
+                android:background="@color/heading"
+                android:padding="@dimen/_5sdp"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:layout_below="@id/deadline_title"
+                android:id="@+id/deadline_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/round_edittext_light"
+                    android:layout_weight="1">
+
+                    <com.app.rbc.employee.utils.MySpinner
+                        android:id="@+id/date_select"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:spinnerMode="dropdown"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_edittext_light">
+
+                    <com.app.rbc.employee.utils.MySpinner
+                        android:id="@+id/time_select"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:spinnerMode="dropdown" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+    <com.dd.processbutton.iml.ActionProcessButton
+        android:id="@+id/submit_task"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:text="submit"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        custom:pb_colorComplete="@color/green_complete"
+        custom:pb_colorError="@color/red_error"
+        custom:pb_colorNormal="@color/colorPrimary"
+        custom:pb_colorPressed="@color/colorPrimaryDark"
+        custom:pb_colorProgress="@color/purple_progress"
+        custom:pb_textComplete="Success"
+        custom:pb_textError="Error"
+        custom:pb_textProgress="Uploading"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp" />
+
+</RelativeLayout>
