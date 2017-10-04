@@ -135,6 +135,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
     public static boolean show_delete = false;
     public static boolean show_completed = false;
 
+    public boolean manager = false;
     // Filter Dialog
     private Button deadline_button;
     private Calendar myCalendar;
@@ -180,13 +181,21 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
         rootview = inflater.inflate(R.layout.fragment_task_home, container, false);
         show_delete = false;
         unbinder = ButterKnife.bind(this, rootview);
+
         if (AppUtil.getString(getContext(), TagsPreferences.ROLE).equalsIgnoreCase("Manager")) {
+            manager=true;
             fab.show();
+            buttonLayout.setVisibility(View.VISIBLE);
+            indicatorLayout.setVisibility(View.VISIBLE);
         } else {
+            manager=false;
             fab.hide();
+            buttonLayout.setVisibility(View.GONE);
+            indicatorLayout.setVisibility(View.GONE);
         }
+
         setSwipeRefresh();
-        setRecyclerListener();
+//        setRecyclerListener();
         return rootview;
     }
 
@@ -194,7 +203,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
         if(position == 0) {
             tasksRecyclerView.animate()
                     .translationX(-500)
-                    .setDuration(200)
+                    .setDuration(100)
             .setListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -228,7 +237,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
         if(position == 1) {
             tasksRecyclerView.animate()
                     .translationX(+500)
-                    .setDuration(200)
+                    .setDuration(100)
                     .setListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
@@ -361,7 +370,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
         MenuItem search = menu.findItem(R.id.search);
         search.setVisible(true);
         MenuItem filter = menu.findItem(R.id.filter);
-        filter.setVisible(true);
+        filter.setVisible(false);
     }
 
     @Override
@@ -385,6 +394,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
     @OnClick(R.id.todo_list)
     public void setTodo_list(View view) {
+//        swipeRight();
         AppUtil.logger("Task Activity : ", " Show Todo List");
         todoList.setTextColor(Color.parseColor("#FFFFFF"));
         tasksAsssigned.setTextColor(Color.parseColor("#CCCCCC"));
@@ -394,6 +404,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
     @OnClick(R.id.tasks_asssigned)
     public void setTasksAsssigned(View view) {
+//        swipeLeft();
         todoList.setTextColor(Color.parseColor("#CCCCCC"));
         tasksAsssigned.setTextColor(Color.parseColor("#FFFFFF"));
         show_tasks_assigned();
@@ -418,6 +429,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
     public void get_completed_list() {
 //        if(completed_list!=null)
 //       completed_list.clear();
+
         for (int i = 0; i < todolist.getData().size(); i++) {
             if (todolist.getData().get(i).getStatus().equalsIgnoreCase("Complete")) {
                 completed_list.add(todolist.getData().get(i));
@@ -451,11 +463,18 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
     public void show_todo_list() {
         position = 0;
-        buttonLayout.setVisibility(View.VISIBLE);
-        indicatorLayout.setVisibility(View.VISIBLE);
+        if(manager)
+        {
+
+            buttonLayout.setVisibility(View.VISIBLE);
+            indicatorLayout.setVisibility(View.VISIBLE);
+            todoList.setTextColor(Color.parseColor("#FFFFFF"));
+            tasksAsssigned.setTextColor(Color.parseColor("#CCCCCC"));
+            todoIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            assignedIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        }
         show_completed = false;
-        todoIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        assignedIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         todolist = new Gson().fromJson(AppUtil.getString(getContext().getApplicationContext(), TagsPreferences.TASK_LIST), Todolist.class);
 
         todo_list_adapter = new Todo_list_adapter(non_completed_list, getContext(), Task_home.this);
@@ -477,11 +496,18 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
     public void show_tasks_assigned() {
         position = 1;
-        buttonLayout.setVisibility(View.VISIBLE);
-        indicatorLayout.setVisibility(View.VISIBLE);
+        if(manager)
+        {
+            buttonLayout.setVisibility(View.VISIBLE);
+            indicatorLayout.setVisibility(View.VISIBLE);
+            todoList.setTextColor(Color.parseColor("#CCCCCC"));
+            tasksAsssigned.setTextColor(Color.parseColor("#FFFFFF"));
+
+            assignedIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            todoIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        }
         show_completed = false;
-        assignedIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        todoIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         //    Todolist todolist = new Gson().fromJson(AppUtil.getString(getContext().getApplicationContext(), TagsPreferences.TASK_LIST), Todolist.class);
         todolist = new Gson().fromJson(AppUtil.getString(getContext().getApplicationContext(), TagsPreferences.TASK_LIST), Todolist.class);
 
@@ -678,12 +704,13 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
                 //  show_tasks_assigned();
                 swipeRefreshLayout.setRefreshing(false);
 
+                    set_task_assigned_list();
+                    get_non_completed_assigned_task();
                 set_todo_list();
-                set_task_assigned_list();
                 get_non_completed_task();
-                get_non_completed_assigned_task();
                 get_completed_list();
                 show_todo_list();
+
                 //  proceed();
             }
 

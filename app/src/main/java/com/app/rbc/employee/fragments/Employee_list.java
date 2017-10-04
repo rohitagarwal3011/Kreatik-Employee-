@@ -28,6 +28,9 @@ import com.app.rbc.employee.utils.ChangeFragment;
 import com.app.rbc.employee.utils.TagsPreferences;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -146,7 +149,17 @@ public class Employee_list extends Fragment {
     {
         Employee employee = new Gson().fromJson(AppUtil.getString(getContext().getApplicationContext(), TagsPreferences.EMPLOYEE_LIST), Employee.class);
 
-                          employee_list_adapter = new Employee_list_adapter(employee.getData(), getContext(), tag);
+        List<Employee.Data> employeeList = new ArrayList<>();
+
+        for(int i = 0 ; i<employee.getData().size();i++ )
+        {
+            if(!employee.getData().get(i).getRole().equalsIgnoreCase("Admin"))
+            {
+                employeeList.add(employee.getData().get(i));
+            }
+        }
+
+        employee_list_adapter = new Employee_list_adapter(employeeList, getContext(), tag);
         LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         selectEmployee.setLayoutManager(gridLayoutManager);
