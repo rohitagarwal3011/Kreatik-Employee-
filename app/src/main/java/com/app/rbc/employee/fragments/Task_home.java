@@ -873,9 +873,18 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
     public void setRecyclerSearch(String titleQuery) {
         AppUtil.logger(TAG, titleQuery);
         List<Task> searchList = new ArrayList<>();
-        for (int i = 0; i < todo_list.size(); i++) {
-            if (todo_list.get(i).getTitle().toLowerCase().contains(titleQuery.toLowerCase())) {
-                searchList.add(todo_list.get(i));
+        if(position == 0) {
+            for (int i = 0; i < non_completed_list.size(); i++) {
+                if (non_completed_list.get(i).getTitle().toLowerCase().contains(titleQuery.toLowerCase())) {
+                    searchList.add(non_completed_list.get(i));
+                }
+            }
+        }
+        else if(position == 1) {
+            for (int i = 0; i < non_completed_assigned_list.size(); i++) {
+                if (non_completed_assigned_list.get(i).getTitle().toLowerCase().contains(titleQuery.toLowerCase())) {
+                    searchList.add(non_completed_assigned_list.get(i));
+                }
             }
         }
         AppUtil.logger(TAG, searchList.size() + "");
