@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.rbc.employee.R;
-import com.app.rbc.employee.activities.IndentRegisterActivity;
+import com.app.rbc.employee.activities.ProfileActivity;
 import com.app.rbc.employee.api.APIController;
 import com.app.rbc.employee.models.db.models.Employee;
 import com.app.rbc.employee.models.db.models.User;
@@ -201,7 +201,7 @@ public class MyDetailsFragment extends Fragment implements View.OnClickListener{
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
 
-        APIController controller = new APIController(getContext(),code,IndentRegisterActivity.ACTIVITY);
+        APIController controller = new APIController(getContext(),code,ProfileActivity.ACTIVITY);
         controller.sendOTP(employee);
     }
 
@@ -226,7 +226,7 @@ public class MyDetailsFragment extends Fragment implements View.OnClickListener{
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
 
-        APIController controller = new APIController(getContext(),code,IndentRegisterActivity.ACTIVITY);
+        APIController controller = new APIController(getContext(),code,ProfileActivity.ACTIVITY);
         controller.updateMe(user);
     }
     private void inflateOTPDialog() {
@@ -245,7 +245,7 @@ public class MyDetailsFragment extends Fragment implements View.OnClickListener{
         send_otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                APIController controller = new APIController(getActivity(),VERIFY_OTP,IndentRegisterActivity.ACTIVITY);
+                APIController controller = new APIController(getActivity(),VERIFY_OTP, ProfileActivity.ACTIVITY);
                 controller.verifyOTP(employee,otp.getText().toString());
                 dialog.dismiss();
                 sweetAlertDialog.show();
@@ -261,10 +261,7 @@ public class MyDetailsFragment extends Fragment implements View.OnClickListener{
         sweetAlertDialog.dismiss();
         switch(status) {
             case 2 :
-                if(code == 12) {
-                    ((IndentRegisterActivity)getActivity()).popBackStack();
-                }
-                else if(code == 14) {
+                if(code == 14) {
                     inflateOTPDialog();
                 }
                 else if(code == 15) {

@@ -123,7 +123,7 @@ public class HomeActivity extends AppCompatActivity
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, IndentRegisterActivity.class);
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -170,7 +170,7 @@ public class HomeActivity extends AppCompatActivity
     @OnClick(R.id.module_reports)
     public void open_reports_module(View view) {
 
-        Intent intent = new Intent(HomeActivity.this, ReportActivity.class);
+        Intent intent = new Intent(HomeActivity.this, YoutubeActivity.class);
         startActivity(intent);
 
     }
@@ -189,7 +189,7 @@ public class HomeActivity extends AppCompatActivity
     @OnClick(R.id.module_chat)
     public void open_chat(View view) {
 
-        Intent intent = new Intent(HomeActivity.this, AddVehicleActivity.class);
+        Intent intent = new Intent(HomeActivity.this, ChatActivity.class);
         startActivity(intent);
 
     }
