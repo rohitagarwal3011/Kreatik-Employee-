@@ -54,27 +54,12 @@ public class ReportActivity extends AppCompatActivity {
             case android.R.id.home :
                 onBackPressed();
                 return true;
-            case R.id.playlist:
-                startYoutubeIntent();
-                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.indent_register_menu, menu);
-        return true;
-    }
-
-
-    private void startYoutubeIntent() {
-        Intent intent = new Intent(ReportActivity.this, YoutubeActivity.class);
-        startActivity(intent);
-    }
 
 
     private void setFragment(int code) {
