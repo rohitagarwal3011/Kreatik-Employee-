@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.app.rbc.employee.R;
 import com.app.rbc.employee.activities.TaskActivity;
 import com.app.rbc.employee.fragments.Task_home;
+import com.app.rbc.employee.listeners.OnSwipeTouchListener;
 import com.app.rbc.employee.models.Employee;
 import com.app.rbc.employee.models.Task;
 import com.app.rbc.employee.models.Todolist;
