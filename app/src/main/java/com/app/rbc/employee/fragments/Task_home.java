@@ -1,5 +1,6 @@
 package com.app.rbc.employee.fragments;
 
+import android.animation.Animator;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -8,6 +9,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,9 +20,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,6 +36,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.app.rbc.employee.R;
 import com.app.rbc.employee.activities.TaskActivity;
@@ -37,6 +44,7 @@ import com.app.rbc.employee.adapters.Filter_task_adapter;
 import com.app.rbc.employee.adapters.Tasks_assigned_adapter;
 import com.app.rbc.employee.adapters.Todo_list_adapter;
 import com.app.rbc.employee.interfaces.ApiServices;
+import com.app.rbc.employee.listeners.OnSwipeTouchListener;
 import com.app.rbc.employee.models.Employee;
 import com.app.rbc.employee.models.Task;
 import com.app.rbc.employee.models.Todolist;
@@ -71,7 +79,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongClickListener {
+public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongClickListener{
 
     public static final String TASK_ID = "TASK_ID";
     public static final String TASK_TITLE = "TASK_TITLE";
@@ -108,6 +116,8 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
     View assignedIndicator;
     @BindView(R.id.empty_relative)
     RelativeLayout empty_relative;
+    @BindView(R.id.rootLinear)
+    LinearLayout rootLinear;
 
 
     public static Employee employee_list;
@@ -125,14 +135,15 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
     public static boolean show_delete = false;
     public static boolean show_completed = false;
 
+    public boolean manager = false;
     // Filter Dialog
     private Button deadline_button;
     private Calendar myCalendar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static boolean proceed;
-
+    int position = 0;
     public Task_home() {
-        // Required empty public constructor
+
     }
 
     public static Task_home newInstance(String task_id) {
@@ -166,18 +177,111 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         rootview = inflater.inflate(R.layout.fragment_task_home, container, false);
         show_delete = false;
         unbinder = ButterKnife.bind(this, rootview);
+
         if (AppUtil.getString(getContext(), TagsPreferences.ROLE).equalsIgnoreCase("Manager")) {
+            manager=true;
             fab.show();
+            buttonLayout.setVisibility(View.VISIBLE);
+            indicatorLayout.setVisibility(View.VISIBLE);
         } else {
+            manager=false;
             fab.hide();
+            buttonLayout.setVisibility(View.GONE);
+            indicatorLayout.setVisibility(View.GONE);
         }
+
         setSwipeRefresh();
+//        setRecyclerListener();
         return rootview;
+    }
+
+    public void swipeLeft() {
+        if(position == 0) {
+            tasksRecyclerView.animate()
+                    .translationX(-500)
+                    .setDuration(100)
+            .setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    tasksRecyclerView.animate()
+                            .translationX(0)
+                            .setDuration(0);
+                    show_tasks_assigned();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+
+
+        }
+    }
+
+    public void swipeRight() {
+        if(position == 1) {
+            tasksRecyclerView.animate()
+                    .translationX(+500)
+                    .setDuration(100)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            tasksRecyclerView.animate()
+                                    .translationX(0)
+                                    .setDuration(0);
+                            show_todo_list();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+
+
+        }
+    }
+
+    private void setRecyclerListener() {
+        tasksRecyclerView.addOnItemTouchListener(new OnSwipeTouchListener(getActivity()) {
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+                swipeLeft();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                swipeRight();
+            }
+
+        });
     }
 
 
@@ -216,10 +320,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
     @Override
     public void onPause() {
         super.onPause();
-        // register GCM registration complete receiver
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mRegistrationBroadcastReceiver);
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mRegistrationBroadcastReceiver);
 
     }
@@ -244,31 +345,11 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
 
                     if (intent.getStringExtra("type").equalsIgnoreCase("task_update")) {
-
-
-//                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//                        notificationManager.cancelAll();
-
-                        update_order(intent.getStringExtra("task_id"), intent.getStringExtra("status"), Long.parseLong(intent.getStringExtra("unread_count")), true);
-//                        Tasklogs.Log newlog1 = new Tasklogs().new Log();
-//                        newlog1.setChangedBy(intent.getStringExtra("changed_by"));
-//                        newlog1.setChangeTime(intent.getStringExtra("change_time"));
-//                        newlog1.setDocs(intent.getStringExtra("docs"));
-//                        newlog1.setStatus(intent.getStringExtra("status"));
-//                        newlog1.setTaskId(intent.getStringExtra("task_id"));
-//                        newlog1.setComment(intent.getStringExtra("comment"));
-//                        newlog1.setmLogtype(intent.getStringExtra("log_type"));
-//                        add_new_message(newlog1);
-
+                        update_order(intent.getStringExtra("task_id"), intent.getStringExtra("status"),
+                                Long.parseLong(intent.getStringExtra("unread_count")), true);
 
                     }
-//                    else {
-//                        update_order_and_count(intent.getStringExtra("task_id"),intent.getStringExtra("status"),Long.parseLong(intent.getStringExtra("unread_count")),true);
-//                    }
-
                 }
-                // checking for type intent filter
-
             }
         };
 
@@ -289,7 +370,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
         MenuItem search = menu.findItem(R.id.search);
         search.setVisible(true);
         MenuItem filter = menu.findItem(R.id.filter);
-        filter.setVisible(true);
+        filter.setVisible(false);
     }
 
     @Override
@@ -313,6 +394,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
     @OnClick(R.id.todo_list)
     public void setTodo_list(View view) {
+//        swipeRight();
         AppUtil.logger("Task Activity : ", " Show Todo List");
         todoList.setTextColor(Color.parseColor("#FFFFFF"));
         tasksAsssigned.setTextColor(Color.parseColor("#CCCCCC"));
@@ -322,6 +404,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
     @OnClick(R.id.tasks_asssigned)
     public void setTasksAsssigned(View view) {
+//        swipeLeft();
         todoList.setTextColor(Color.parseColor("#CCCCCC"));
         tasksAsssigned.setTextColor(Color.parseColor("#FFFFFF"));
         show_tasks_assigned();
@@ -346,6 +429,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
     public void get_completed_list() {
 //        if(completed_list!=null)
 //       completed_list.clear();
+
         for (int i = 0; i < todolist.getData().size(); i++) {
             if (todolist.getData().get(i).getStatus().equalsIgnoreCase("Complete")) {
                 completed_list.add(todolist.getData().get(i));
@@ -362,6 +446,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
 
     public void show_completed_list() {
+        position = 0;
         buttonLayout.setVisibility(View.GONE);
         indicatorLayout.setVisibility(View.GONE);
         show_completed = true;
@@ -377,11 +462,19 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
 
     public void show_todo_list() {
-        buttonLayout.setVisibility(View.VISIBLE);
-        indicatorLayout.setVisibility(View.VISIBLE);
+        position = 0;
+        if(manager)
+        {
+
+            buttonLayout.setVisibility(View.VISIBLE);
+            indicatorLayout.setVisibility(View.VISIBLE);
+            todoList.setTextColor(Color.parseColor("#FFFFFF"));
+            tasksAsssigned.setTextColor(Color.parseColor("#CCCCCC"));
+            todoIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            assignedIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        }
         show_completed = false;
-        todoIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        assignedIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         todolist = new Gson().fromJson(AppUtil.getString(getContext().getApplicationContext(), TagsPreferences.TASK_LIST), Todolist.class);
 
         todo_list_adapter = new Todo_list_adapter(non_completed_list, getContext(), Task_home.this);
@@ -402,11 +495,19 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 
 
     public void show_tasks_assigned() {
-        buttonLayout.setVisibility(View.VISIBLE);
-        indicatorLayout.setVisibility(View.VISIBLE);
+        position = 1;
+        if(manager)
+        {
+            buttonLayout.setVisibility(View.VISIBLE);
+            indicatorLayout.setVisibility(View.VISIBLE);
+            todoList.setTextColor(Color.parseColor("#CCCCCC"));
+            tasksAsssigned.setTextColor(Color.parseColor("#FFFFFF"));
+
+            assignedIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            todoIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        }
         show_completed = false;
-        assignedIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        todoIndicator.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         //    Todolist todolist = new Gson().fromJson(AppUtil.getString(getContext().getApplicationContext(), TagsPreferences.TASK_LIST), Todolist.class);
         todolist = new Gson().fromJson(AppUtil.getString(getContext().getApplicationContext(), TagsPreferences.TASK_LIST), Todolist.class);
 
@@ -603,12 +704,13 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
                 //  show_tasks_assigned();
                 swipeRefreshLayout.setRefreshing(false);
 
+                    set_task_assigned_list();
+                    get_non_completed_assigned_task();
                 set_todo_list();
-                set_task_assigned_list();
                 get_non_completed_task();
-                get_non_completed_assigned_task();
                 get_completed_list();
                 show_todo_list();
+
                 //  proceed();
             }
 
@@ -641,6 +743,8 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
         tasks_assigned_adapter.notifyDataSetChanged();
 
     }
+
+
 
 
     public interface OnTaskTypeSelectListener {
