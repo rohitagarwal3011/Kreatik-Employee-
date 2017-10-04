@@ -69,12 +69,12 @@
                 <ImageView
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
-                    android:src="@drawable/crane"/>
+                    android:src="@drawable/vehicle"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Site Overview"
+                    android:text="Dispatch Vehicle"
                     android:textStyle="bold"
                     android:textAllCaps="false"
                     android:textColor="#808080"/>
