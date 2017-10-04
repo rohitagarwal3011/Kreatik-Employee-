@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.app.rbc.employee.R;
 import com.app.rbc.employee.activities.IndentRegisterActivity;
+import com.app.rbc.employee.activities.ProfileActivity;
 import com.app.rbc.employee.activities.ReportActivity;
 import com.app.rbc.employee.activities.SiteOverviewActivity;
 import com.app.rbc.employee.activities.Splash;
@@ -1076,7 +1077,7 @@ public class APIController{
                 break;
             case 2 : ((SiteOverviewActivity) context).publishAPIResponse(status, code, message[0]);
                 break;
-            case 5: ((IndentRegisterActivity) context).publishAPIResponse(status, code, message[0]);
+            case 5: ((ProfileActivity) context).publishAPIResponse(status, code, message[0]);
                 break;
             case 8 : ((ReportActivity) context).publishAPIResponse(status, code, message[0]);
                 break;

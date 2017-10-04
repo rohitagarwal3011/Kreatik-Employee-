@@ -1,22 +1,28 @@
 package com.app.rbc.employee.activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.app.rbc.employee.Manifest;
 import com.app.rbc.employee.R;
 import com.app.rbc.employee.fragments.RecievedVehicle;
+import com.app.rbc.employee.fragments.UpdatePlaceholderFragment;
 import com.orm.SugarContext;
 
 public class ReportActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private RecievedVehicle recievedVehicle;
+    private UpdatePlaceholderFragment updatePlaceholderFragment;
     public static final int ACTIVITY = 8;
 
     @Override
@@ -33,13 +39,56 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId())
+        {
+            case android.R.id.home :
+                onBackPressed();
+                return true;
+            case R.id.playlist:
+                startYoutubeIntent();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.indent_register_menu, menu);
+        return true;
+    }
+
+
+    private void startYoutubeIntent() {
+        Intent intent = new Intent(ReportActivity.this, YoutubeActivity.class);
+        startActivity(intent);
+    }
+
+
     private void setFragment(int code) {
         switch (code) {
             case 1:
-                recievedVehicle = new RecievedVehicle();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        recievedVehicle).commit();
+                updatePlaceholderFragment = new UpdatePlaceholderFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container,updatePlaceholderFragment)
+                        .commit();
                 break;
+//                recievedVehicle = new RecievedVehicle();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                        recievedVehicle).commit();
+//                break;
         }
     }
 
