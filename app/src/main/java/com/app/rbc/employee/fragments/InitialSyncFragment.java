@@ -14,6 +14,7 @@ import com.app.rbc.employee.activities.HomeActivity;
 import com.app.rbc.employee.api.APIController;
 import com.app.rbc.employee.models.db.models.Categoryproduct;
 import com.app.rbc.employee.models.db.models.Employee;
+import com.app.rbc.employee.models.db.models.Site;
 import com.app.rbc.employee.models.db.models.Vendor;
 
 public class InitialSyncFragment extends Fragment {
@@ -49,13 +50,18 @@ public class InitialSyncFragment extends Fragment {
         switch (code) {
             case 0:
                 if(status == 2) {
-                    controller = new APIController(getContext(),
-                            1,
-                            1);
-                    controller.fetchSites();
+                    if (Site.count(Site.class) == 0) {
+                        controller = new APIController(getContext(),
+                                1,
+                                1);
+                        controller.fetchSites();
+                    }
+                    else {
+                        publichApiResponse(2,1);
+                    }
                 }
                 else {
-                    publichApiResponse(2,1);
+                    publishError();
                 }
                 break;
             case 1:
