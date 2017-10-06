@@ -12,6 +12,9 @@ import android.widget.Toast;
 import com.app.rbc.employee.R;
 import com.app.rbc.employee.activities.HomeActivity;
 import com.app.rbc.employee.api.APIController;
+import com.app.rbc.employee.models.db.models.Categoryproduct;
+import com.app.rbc.employee.models.db.models.Employee;
+import com.app.rbc.employee.models.db.models.Vendor;
 
 public class InitialSyncFragment extends Fragment {
 
@@ -32,10 +35,14 @@ public class InitialSyncFragment extends Fragment {
     }
 
     private void callInitialSyncApis() {
-        controller = new APIController(getContext(),
-                0,
-                1);
-        controller.fetchEmp();
+        if(Employee.count(Employee.class)
+                == 0) {
+            controller = new APIController(getContext(),0,1);
+            controller.fetchEmp();
+        }
+        else {
+            publichApiResponse(2,0);
+        }
     }
 
     public void publichApiResponse(int status,int code,String... message) {
@@ -48,15 +55,18 @@ public class InitialSyncFragment extends Fragment {
                     controller.fetchSites();
                 }
                 else {
-                    publishError();
+                    publichApiResponse(2,1);
                 }
                 break;
             case 1:
                 if(status == 2) {
-                    controller = new APIController(getContext(),
-                            2,
-                            1);
-                    controller.fetchVendors();
+                    if(Vendor.count(Vendor.class) == 0) {
+                        controller = new APIController(getContext(),2,1);
+                        controller.fetchVendors();
+                    }
+                    else {
+                        publichApiResponse(2,2);
+                    }
                 }
                 else {
                     publishError();
@@ -64,10 +74,13 @@ public class InitialSyncFragment extends Fragment {
                 break;
             case 2:
                 if(status == 2) {
-                    controller = new APIController(getContext(),
-                            3,
-                            1);
-                    controller.fetchCategoriesProducts();
+                    if(Categoryproduct.count(Categoryproduct.class) == 0) {
+                        controller = new APIController(getContext(),3,1);
+                        controller.fetchCategoriesProducts();
+                    }
+                    else {
+                        publichApiResponse(2,3);
+                    }
                 }
                 else {
                     publishError();

@@ -11,6 +11,10 @@ import com.app.rbc.employee.activities.ReportActivity;
 import com.app.rbc.employee.activities.SiteOverviewActivity;
 import com.app.rbc.employee.activities.Splash;
 import com.app.rbc.employee.fragments.InitialSyncFragment;
+import com.app.rbc.employee.interfaces.ApiServices;
+import com.app.rbc.employee.models.AllSiteList;
+import com.app.rbc.employee.models.StockCategories;
+import com.app.rbc.employee.models.Vendors;
 import com.app.rbc.employee.models.db.models.Categoryproduct;
 import com.app.rbc.employee.models.db.models.Employee;
 import com.app.rbc.employee.models.db.models.Site;
@@ -21,6 +25,7 @@ import com.app.rbc.employee.models.db.models.site_overview.Requirement;
 import com.app.rbc.employee.models.db.models.site_overview.Stock;
 import com.app.rbc.employee.models.db.models.site_overview.Trans;
 import com.app.rbc.employee.utils.AppUtil;
+import com.app.rbc.employee.utils.RetrofitClient;
 import com.app.rbc.employee.utils.TagsPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,13 +44,12 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-/**
- * Created by jeet on 5/9/17.
- */
+
 
 public class APIController{
 
@@ -102,7 +106,7 @@ public class APIController{
             RequestBody admin_user_id = RequestBody.create(MediaType.parse("text/plain"), user.getAdmin_user_id());
 
 
-            Call<String> call = apiInterface.addUser(name, email, pwd, role, file_present, myfile,admin_user_id);
+            Call<String> call = apiInterface.addUser(name, email, pwd, role, file_present, myfile, admin_user_id);
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
@@ -202,6 +206,7 @@ public class APIController{
                         Log.e("Response",body.toString());
                         int status = body.getJSONObject("meta").getInt("status");
                         String message = body.getJSONObject("meta").getString("message");
+                        getSiteList();
                         sendAPIResult(status,message);
                     }catch (Exception e) {
                         sendAPIResult(0,"Service encountered an error");
@@ -239,6 +244,7 @@ public class APIController{
                         Log.e("Response",body.toString());
                         int status = body.getJSONObject("meta").getInt("status");
                         String message = body.getJSONObject("meta").getString("message");
+                        getSiteList();
                         sendAPIResult(status,message);
                     }catch (Exception e) {
                         sendAPIResult(0,"Service encountered an error");
@@ -273,6 +279,7 @@ public class APIController{
                         Log.e("Response",body.toString());
                         int status = body.getJSONObject("meta").getInt("status");
                         String message = body.getJSONObject("meta").getString("message");
+                        getStockList();
                         sendAPIResult(status,message);
                     }catch (Exception e) {
                         sendAPIResult(0,"Service encountered an error");
@@ -307,6 +314,7 @@ public class APIController{
                         Log.e("Response",body.toString());
                         int status = body.getJSONObject("meta").getInt("status");
                         String message = body.getJSONObject("meta").getString("message");
+                        getVendorList();
                         sendAPIResult(status,message);
                     }catch (Exception e) {
 
@@ -361,7 +369,7 @@ public class APIController{
 
 
     public void fetchVehicleList() {
-        Call<String> call = apiInterface.vehicleList(2);
+        Call<String> call = apiInterface.vehicleList(1);
 
         call.enqueue(new Callback<String>() {
             @Override
@@ -523,6 +531,7 @@ public class APIController{
                         AppUtil.putString(context,TagsPreferences.PROFILE_IMAGE,data.getString("Profile_image"));
 
                         sendAPIResult(status,message);
+                        getEmployeeList();
                     }catch (Exception e) {
 
                     }
@@ -559,6 +568,7 @@ public class APIController{
                         int status = body.getJSONObject("meta").getInt("status");
                         String message = body.getJSONObject("meta").getString("message");
                         sendAPIResult(status,message);
+                        getEmployeeList();
                     }catch (Exception e) {
                         sendAPIResult(0,"Service encountered an error");
 
@@ -595,6 +605,7 @@ public class APIController{
                         Log.e("Response",body.toString());
                         int status = body.getJSONObject("meta").getInt("status");
                         String message = body.getJSONObject("meta").getString("message");
+                        getVendorList();
                         sendAPIResult(status,message);
                     }catch (Exception e) {
 
@@ -817,6 +828,7 @@ public class APIController{
                         Log.e("Response",body.toString());
                         int status = body.getJSONObject("meta").getInt("status");
                         String message = body.getJSONObject("meta").getString("message");
+                        getStockList();
                         sendAPIResult(status,message);
                     }catch (Exception e) {
                         Log.e("Error Add Category",e.toString());
@@ -851,6 +863,7 @@ public class APIController{
                         Log.e("Response",body.toString());
                         int status = body.getJSONObject("meta").getInt("status");
                         String message = body.getJSONObject("meta").getString("message");
+                        getStockList();
                         sendAPIResult(status,message);
                     }catch (Exception e) {
                         Log.e("Error Update Category",e.toString());
@@ -893,7 +906,8 @@ public class APIController{
                             Employee.deleteInTx(deleteEmps);
                             Employee.saveInTx(employees);
                             Log.e("Employees Count",employees.size()+"");
-                            sendAPIResult(status,message);
+                            sendAPIResult(status,"Success");
+                            getEmployeeList();
                         }
 
                     }catch (Exception e) {
@@ -938,7 +952,8 @@ public class APIController{
                             Site.deleteInTx(deleteSites);
                             Site.saveInTx(sites);
                             Log.e("Site Count",sites.size()+"");
-                            sendAPIResult(status,message);
+                            getSiteList();
+                            sendAPIResult(status,"Success");
                         }
 
                     }catch (Exception e) {
@@ -983,7 +998,9 @@ public class APIController{
                             Vendor.deleteInTx(deleteVendors);
                             Vendor.saveInTx(vendors);
                             Log.e("Vendor Count",vendors.size()+"");
-                            sendAPIResult(status,message);
+                            sendAPIResult(status,"Success");
+                            getVendorList();
+
                         }
 
                     }catch (Exception e) {
@@ -1046,7 +1063,8 @@ public class APIController{
 
 
                             Log.e("Category Product Count",categoryproducts.size()+"");
-                            sendAPIResult(status,message);
+                            getStockList();
+                            sendAPIResult(status,"Success");
                         }
 
                     }catch (Exception e) {
@@ -1068,12 +1086,10 @@ public class APIController{
     }
 
 
-
-
     private void sendAPIResult(int status,String... message) {
         switch (activity) {
             case 1 : final InitialSyncFragment frag = (InitialSyncFragment)((Splash)context).getSupportFragmentManager().findFragmentByTag("InitialSync");
-                    frag.publichApiResponse(status,code,message[0]);
+                frag.publichApiResponse(status,code,message[0]);
                 break;
             case 2 : ((SiteOverviewActivity) context).publishAPIResponse(status, code, message[0]);
                 break;
@@ -1083,6 +1099,117 @@ public class APIController{
                 break;
 
         }
+    }
+
+
+
+
+
+
+    //Shared Preferences
+
+    public void getEmployeeList() {
+        final ApiServices apiServices = RetrofitClient.getApiService();
+        Call<com.app.rbc.employee.models.Employee> call2 = apiServices.fetch_emp(AppUtil.getString(context, TagsPreferences.USER_ID));
+        AppUtil.logger("Home Activity ", "Fetch Employee : " + call2.request().toString() + "User id : " +
+                AppUtil.getString(context, TagsPreferences.USER_ID));
+        call2.enqueue(new Callback<com.app.rbc.employee.models.Employee>() {
+            @Override
+            public void onResponse(Call<com.app.rbc.employee.models.Employee> call2, Response<com.app.rbc.employee.models.Employee> response) {
+
+                com.app.rbc.employee.models.Employee employee = response.body();
+                AppUtil.putString(context, TagsPreferences.EMPLOYEE_LIST, new Gson().toJson(employee));
+                AppUtil.logger("List : ", AppUtil.getString(context, TagsPreferences.EMPLOYEE_LIST));
+
+            }
+
+
+            @Override
+            public void onFailure(Call<com.app.rbc.employee.models.Employee> call2, Throwable t) {
+                AppUtil.logger("Employee List Pref Error", t.toString());
+            }
+        });
+
+    }
+
+    private void getStockList() {
+
+        final ApiServices apiServices = RetrofitClient.getApiService();
+        Call<StockCategories> call = apiServices.stock_category();
+        AppUtil.logger("Stock Category ", "Get Categories : " + call.request().toString());
+        call.enqueue(new Callback<StockCategories>() {
+            @Override
+            public void onResponse(Call<StockCategories> call, Response<StockCategories> response) {
+                if (response.body().getMeta().getStatus() == 2) {
+
+
+                    AppUtil.putString(context, TagsPreferences.STOCK_LIST, new Gson().toJson(response.body()));
+                    AppUtil.logger("Stock List : ", AppUtil.getString(context, TagsPreferences.STOCK_LIST));
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<StockCategories> call1, Throwable t) {
+                AppUtil.logger("Stock List Pref Error", t.toString());
+            }
+        });
+
+    }
+
+
+    private void getVendorList() {
+
+        final ApiServices apiServices = RetrofitClient.getApiService();
+        Call<Vendors> call = apiServices.total_vendor_list();
+        AppUtil.logger("Vendor_list ", "Get Vendors : " + call.request().toString());
+        call.enqueue(new Callback<Vendors>() {
+            @Override
+            public void onResponse(Call<Vendors> call, Response<Vendors> response) {
+                if (response.body().getMeta().getStatus() == 2) {
+
+
+                    AppUtil.putString(context, TagsPreferences.VENDORS_LIST, new Gson().toJson(response.body()));
+                    AppUtil.logger("Vendors List : ", AppUtil.getString(context, TagsPreferences.VENDORS_LIST));
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Vendors> call1, Throwable t) {
+                AppUtil.logger("Vendor List Pref Error", t.toString());
+            }
+        });
+    }
+
+    private void getSiteList() {
+
+        final ApiServices apiServices = RetrofitClient.getApiService();
+        Call<AllSiteList> call = apiServices.all_site_list();
+        AppUtil.logger("Stock Category ", "Get Categories : " + call.request().toString());
+        call.enqueue(new Callback<AllSiteList>() {
+            @Override
+            public void onResponse(Call<AllSiteList> call, Response<AllSiteList> response) {
+                if (response.body().getMeta().getStatus() == 2) {
+
+
+                    AppUtil.putString(context, TagsPreferences.SITE_LIST, new Gson().toJson(response.body()));
+                    AppUtil.logger("Site List : ", AppUtil.getString(context, TagsPreferences.SITE_LIST));
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AllSiteList> call1, Throwable t) {
+                AppUtil.logger("Site List Pref Error", t.toString());
+            }
+        });
     }
 
 }
