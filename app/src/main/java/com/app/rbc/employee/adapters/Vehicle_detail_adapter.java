@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class Vehicle_detail_adapter extends RecyclerView.Adapter<Vehicle_detail_
         SimpleDraweeView mImgInvoice;
         SimpleDraweeView mImgOnrecieve;
         SimpleDraweeView mImgUnloaded;
+        LinearLayout images_layout;
 
 
         public MyViewHolder(View view) {
@@ -76,6 +78,7 @@ public class Vehicle_detail_adapter extends RecyclerView.Adapter<Vehicle_detail_
             mImgOnrecieve = (SimpleDraweeView) itemView.findViewById(R.id.onrecieve_img);
             mImgUnloaded = (SimpleDraweeView) itemView.findViewById(R.id.unloaded_img);
 
+            images_layout = (LinearLayout) itemView.findViewById(R.id.images_layout);
 //            final String [] images = data.get(getAdapterPosition()).getDetails().get(0).getChallanImg().split("\\|");
 
 
@@ -111,15 +114,16 @@ public class Vehicle_detail_adapter extends RecyclerView.Adapter<Vehicle_detail_
         VehicleDetail vehicleDetail = data.get(position);
 
 
-            if(vehicleDetail.getSiteDetails().get(0).getId()==Integer.parseInt(vehicleDetail.getDetails().get(0).getSource()))
-            {
-                holder.source.setText(vehicleDetail.getSiteDetails().get(0).getName());
-                holder.destination.setText(vehicleDetail.getSiteDetails().get(1).getName());
-            }
-            else {
-                holder.source.setText(vehicleDetail.getSiteDetails().get(1).getName());
-                holder.destination.setText(vehicleDetail.getSiteDetails().get(0).getName());
-            }
+        if(vehicleDetail.getDetails().get(0).getSourceType().equalsIgnoreCase("Site")) {
+            holder.source.setText(vehicleDetail.getSrc_details().get(0).getName());
+            holder.destination.setText(vehicleDetail.getDest_details().get(0).getName());
+        }
+        else
+        {
+            holder.source.setText(vehicleDetail.getVendor_details().get(0).getVendorName());
+            holder.destination.setText(vehicleDetail.getDest_details().get(0).getName());
+
+        }
         String unit = "";
         if(data.get(position).getProducts().size() != 0) {
             List<Categoryproduct> categoryproducts = Categoryproduct.find(Categoryproduct.class,
@@ -231,6 +235,7 @@ public class Vehicle_detail_adapter extends RecyclerView.Adapter<Vehicle_detail_
 
 
         if(vehicleDetail.getDetails().get(0).getStatus().equalsIgnoreCase("Received")) {
+            holder.images_layout.setVisibility(View.VISIBLE);
             final String[] images = vehicleDetail.getDetails().get(0).getChallanImg().split("\\|");
             AppUtil.logger("Image links : ", images[0] + "--" + images[1] + "--" + images[2] + "--" + images[3]);
 
@@ -268,7 +273,7 @@ public class Vehicle_detail_adapter extends RecyclerView.Adapter<Vehicle_detail_
                 }
             });
 
-            holder.mImgOnrecieve.setOnClickListener(new View.OnClickListener() {
+            holder.mImgUnloaded.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     posters.clear();
@@ -282,7 +287,7 @@ public class Vehicle_detail_adapter extends RecyclerView.Adapter<Vehicle_detail_
                 }
             });
 
-            holder.mImgUnloaded.setOnClickListener(new View.OnClickListener() {
+            holder.mImgOnrecieve.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     posters.clear();
@@ -295,6 +300,10 @@ public class Vehicle_detail_adapter extends RecyclerView.Adapter<Vehicle_detail_
                             .show();
                 }
             });
+        }
+        else
+        {
+            holder.images_layout.setVisibility(View.GONE);
         }
 
 

@@ -37,7 +37,6 @@ public class CustomTransactionsAdapter extends RecyclerView.Adapter<CustomTransa
     private List<Trans> transactions;
     private Context context;
     ArrayList posters= new ArrayList(1);
-
     public CustomTransactionsAdapter(Context context,List<Trans> transactions) {
         this.transactions = transactions;
         this.context = context;
@@ -79,7 +78,7 @@ public class CustomTransactionsAdapter extends RecyclerView.Adapter<CustomTransa
         }
         else {
             holder.destination.setText(Vendor.find(Vendor.class,"vendorid = ?",transactions.get(position)
-            .getDestination()).get(0).getName());
+                    .getDestination()).get(0).getName());
         }
         String unit = "";
         holder.productTable.removeAllViews();
@@ -88,8 +87,8 @@ public class CustomTransactionsAdapter extends RecyclerView.Adapter<CustomTransa
             String[] products = transactions.get(position).getProducts().split("\\|");
             String[] quantities = transactions.get(position).getQuantites().split("\\|");
 
-                List<Categoryproduct> categoryproducts = Categoryproduct.find(Categoryproduct.class,
-                        "product = ?", products[0]+"");
+            List<Categoryproduct> categoryproducts = Categoryproduct.find(Categoryproduct.class,
+                    "product = ?", products[0]+"");
             if(categoryproducts.size() != 0) {
                 unit = categoryproducts.get(0).getUnit();
             }
@@ -136,12 +135,13 @@ public class CustomTransactionsAdapter extends RecyclerView.Adapter<CustomTransa
         holder.vehicle_number.setText(transactions.get(position).getVehiclenumber());
         if(transactions.get(position).getStatus().equalsIgnoreCase("Received")) {
 
-
+            holder.images_layout.setVisibility(View.VISIBLE);
             String[] urls = transactions.get(position).getChallanimg().split("\\|");
-           final Uri challanUrl = Uri.parse(urls[0]);
-           final Uri invoiceUrl = Uri.parse(urls[1]);
-           final Uri onreceiveUrl = Uri.parse(urls[2]);
-           final Uri unloadedUrl = Uri.parse(urls[3]);
+
+            final Uri challanUrl = Uri.parse(urls[0]);
+            final Uri invoiceUrl = Uri.parse(urls[1]);
+            final Uri onreceiveUrl = Uri.parse(urls[2]);
+            final Uri unloadedUrl = Uri.parse(urls[3]);
 
             holder.challan_img.setImageURI(challanUrl);
             holder.invoice_img.setImageURI(invoiceUrl);
@@ -205,6 +205,9 @@ public class CustomTransactionsAdapter extends RecyclerView.Adapter<CustomTransa
                 }
             });
         }
+        else {
+            holder.images_layout.setVisibility(View.GONE);
+        }
         holder.transaction_status.setText(transactions.get(position).getStatus());
 
     }
@@ -225,6 +228,7 @@ public class CustomTransactionsAdapter extends RecyclerView.Adapter<CustomTransa
         TextView transaction_status;
 
         TableLayout productTable;
+        LinearLayout images_layout;
 
         public MyViewHolder(View view) {
             super(view);
@@ -241,6 +245,7 @@ public class CustomTransactionsAdapter extends RecyclerView.Adapter<CustomTransa
             unloaded_img = (SimpleDraweeView) view.findViewById(R.id.unloaded_img);
             tableLinear = (LinearLayout) view.findViewById(R.id.tableLinear);
             transaction_status = (TextView) view.findViewById(R.id.transaction_status);
+            images_layout = (LinearLayout) itemView.findViewById(R.id.images_layout);
 
 
         }

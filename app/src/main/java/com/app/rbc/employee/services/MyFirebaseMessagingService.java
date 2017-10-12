@@ -93,6 +93,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             {
 
                 Intent intent = new Intent(this, AttendanceActivity.class);
+                intent.putExtra("date",remoteMessage.getData().get("data"));
                 PendingIntent pendingIntent = PendingIntent.getActivity(this,0/* Request code */, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
 

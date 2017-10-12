@@ -233,7 +233,7 @@ public class StockActivity extends AppCompatActivity implements SearchView.OnQue
             }
             else if (show_tabs)
             {
-                //getSupportFragmentManager().popBackStackImmediate();
+                getSupportFragmentManager().popBackStackImmediate();
                 show_tablayout();
                 //super.onBackPressed();
                 //getSupportFragmentManager().popBackStackImmediate();

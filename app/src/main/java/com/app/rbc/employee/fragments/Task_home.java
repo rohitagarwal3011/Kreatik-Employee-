@@ -430,6 +430,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
 //        if(completed_list!=null)
 //       completed_list.clear();
 
+
         for (int i = 0; i < todolist.getData().size(); i++) {
             if (todolist.getData().get(i).getStatus().equalsIgnoreCase("Complete")) {
                 completed_list.add(todolist.getData().get(i));
@@ -441,6 +442,7 @@ public class Task_home extends Fragment implements Todo_list_adapter.OnItemLongC
                 completed_list.add(todolist.getData1().get(i));
             }
         }
+        completed_list_adapter = new Todo_list_adapter(completed_list, getContext(), Task_home.this);
 
     }
 

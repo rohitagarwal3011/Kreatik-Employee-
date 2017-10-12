@@ -434,6 +434,10 @@ public class Task_log_adapter extends RecyclerView.Adapter<Task_log_adapter.MyVi
             {
                 task_details.hide_status_icon();
             }
+            else
+            {
+                task_details.show_status_icon();
+            }
 
 //            }
         }

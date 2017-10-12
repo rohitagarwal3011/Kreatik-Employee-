@@ -46,11 +46,12 @@ public class Transaction_detail_adapter extends RecyclerView.Adapter<Transaction
         TextView transactionDate,transaction_status;
         TextView vehicle_number,driver_name,challan_link;
         SimpleDraweeView challan_img,invoice_img,
-        onreceive_img,unloaded_img;
+                onreceive_img,unloaded_img;
 
         LinearLayout tableLinear;
 
         TableLayout productTable;
+        LinearLayout images_layout;
 
         public MyViewHolder(View view) {
             super(view);
@@ -67,7 +68,7 @@ public class Transaction_detail_adapter extends RecyclerView.Adapter<Transaction
             unloaded_img = (SimpleDraweeView) view.findViewById(R.id.unloaded_img);
             tableLinear = (LinearLayout) view.findViewById(R.id.tableLinear);
             transaction_status = (TextView) view.findViewById(R.id.transaction_status);
-
+            images_layout = (LinearLayout) itemView.findViewById(R.id.images_layout);
             count=1;
 
         }
@@ -94,8 +95,6 @@ public class Transaction_detail_adapter extends RecyclerView.Adapter<Transaction
 
         StockCategoryDetails.TransactionDetail transactionDetail = data.get(position);
 
-
-
         if(transactionDetail.getDetails().get(0).getSourceType().equalsIgnoreCase("Site")) {
             holder.source.setText(transactionDetail.getSrc_details().get(0).getName());
             holder.destination.setText(transactionDetail.getDest_details().get(0).getName());
@@ -104,6 +103,7 @@ public class Transaction_detail_adapter extends RecyclerView.Adapter<Transaction
         {
             holder.source.setText(transactionDetail.getVendor_details().get(0).getVendorName());
             holder.destination.setText(transactionDetail.getDest_details().get(0).getName());
+
         }
 //        holder.source.setText(transactionDetail.getDetails().get(0).getSource());
 //        holder.destination.setText(transactionDetail.getDetails().get(0).getDestination());
@@ -168,6 +168,8 @@ public class Transaction_detail_adapter extends RecyclerView.Adapter<Transaction
             holder.vehicle_number.setText(detail.getVehicleNumber());
 
             if (detail.getStatus().equalsIgnoreCase("Received")) {
+
+                holder.images_layout.setVisibility(View.VISIBLE);
                 String[] urls = detail.getChallanImg().split("\\|");
                 final Uri challanUrl = Uri.parse(urls[0]);
                 final Uri invoiceUrl = Uri.parse(urls[1]);
@@ -178,6 +180,7 @@ public class Transaction_detail_adapter extends RecyclerView.Adapter<Transaction
                 holder.invoice_img.setImageURI(invoiceUrl);
                 holder.onreceive_img.setImageURI(onreceiveUrl);
                 holder.unloaded_img.setImageURI(unloadedUrl);
+
                 holder.challan_img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -234,7 +237,9 @@ public class Transaction_detail_adapter extends RecyclerView.Adapter<Transaction
                                 .show();
                     }
                 });
-
+            }
+            else {
+                holder.images_layout.setVisibility(View.GONE);
             }
         }
         holder.transaction_status.setText(detail.getStatus());

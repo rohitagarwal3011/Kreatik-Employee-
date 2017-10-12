@@ -206,7 +206,9 @@ public class Splash extends AppCompatActivity {
 
                                             finish();
                                         } else if (type.equalsIgnoreCase("mark_attendance")) {
+                                           // JSONArray arr = new JSONArray(intent.getStringExtra("data"));
                                             Intent intent = new Intent(Splash.this, AttendanceActivity.class);
+                                           intent.putExtra("date",intent.getStringExtra("data"));
                                             startActivity(intent);
                                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
@@ -271,15 +273,15 @@ public class Splash extends AppCompatActivity {
                                         }
                                     } catch (Exception e) {
 
-                                        ChangeFragment.changeFragment(getSupportFragmentManager(),R.id.layoutMain,new InitialSyncFragment(),"InitialSync");
+                                       //ChangeFragment.changeFragment(getSupportFragmentManager(),R.id.layoutMain,new InitialSyncFragment(),"InitialSync");
 
-//                                        Intent intent = new Intent(Splash.this, HomeActivity.class);
-//
-//
-//                                        startActivity(intent);
-//                                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//
-//                                        finish();
+                                        Intent intent = new Intent(Splash.this, HomeActivity.class);
+
+
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                                        finish();
                                     }
                                 } else {
 

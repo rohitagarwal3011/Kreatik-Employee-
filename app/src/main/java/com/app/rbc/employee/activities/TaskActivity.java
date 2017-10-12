@@ -382,7 +382,9 @@ public class TaskActivity extends AppCompatActivity implements Task_home.OnTaskT
     @Override
     public boolean onQueryTextChange(String newText) {
         AppUtil.logger(TAG,newText);
-        task_home.setRecyclerSearch(newText);
+//        Fragment mFragment = getSupportFragmentManager().findFragmentById(R.id.frame_main);
+//        if (mFragment instanceof Task_home)
+//            task_home.setRecyclerSearch(newText);
         return true;
     }
 
