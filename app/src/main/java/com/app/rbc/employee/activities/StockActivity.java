@@ -25,6 +25,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.app.rbc.employee.R;
+import com.app.rbc.employee.adapters.CustomStockSiteListAdapter;
 import com.app.rbc.employee.adapters.PO_detail_adapter;
 import com.app.rbc.employee.adapters.Stock_detail_adapter;
 import com.app.rbc.employee.adapters.Transaction_detail_adapter;
@@ -611,8 +613,24 @@ public class StockActivity extends AppCompatActivity implements SearchView.OnQue
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
+            List<String> sites = new ArrayList<>();
+            for(int i = 0 ; i < stockDetail.size() ; i++) {
+                int j;
+                for(j = 0 ; j < sites.size() ; j++) {
+                    if(sites.get(j).equalsIgnoreCase(stockDetail.get(i).getMsitename())) {
+                        break;
+                    }
+                }
+                if(j == sites.size()) {
+                    sites.add(stockDetail.get(i).getMsitename());
+                    Log.e("Site count",sites.size()+"");
+                }
+            }
+            Log.e("totla Stocks",stockDetail.size()+"");
 
-            Stock_detail_adapter adapter = new Stock_detail_adapter(stockDetail,getContext());
+
+            CustomStockSiteListAdapter adapter = new CustomStockSiteListAdapter(getContext(),stockDetail,
+                    sites);
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
 
